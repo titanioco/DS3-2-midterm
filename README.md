@@ -11,6 +11,7 @@ DS3-2-midterm/
 ├── .gitignore
 ├── README.md
 ├── exam_scaffolding_for_ai.md
+├── plant_alarms_integration_guide.md
 ├── src/
 │   ├── main/
 │   │   └── java/
@@ -37,6 +38,13 @@ DS3-2-midterm/
 - `AVL`: AVL-style registry wrapper
 - `BinaryHeap`: max-priority heap used for next-task selection
 - `Main`: command-line controller for the required operations
+
+## Additional resources
+
+- [Plant Alarm Integration Guide](./plant_alarms_integration_guide.md): a full step-by-step guide explaining how the alarm workflow works, including the tree, AVL, heap, and a beginner-friendly example.
+- [Plant Alarm Integration Guide](./plant_alarms_integration_guide.md) is the main conceptual reference for how alarms are created, tracked, prioritized, and canceled across the project.
+
+This guide is intended for both the implementation team and new contributors, and it explains the real-time flow from `REGISTRAR` to `SIGUIENTE` to `CANCELAR` and final reporting.
 
 ## Compile and run
 

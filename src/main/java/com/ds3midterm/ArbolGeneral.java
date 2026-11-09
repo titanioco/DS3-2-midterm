@@ -7,6 +7,8 @@ import java.util.Queue;
 
 public class ArbolGeneral {
 
+    // Cada nodo guarda la alarma real y una lista con sus hijos.
+    // La idea es modelar la planta física: raíz -> sección -> equipo -> alarma.
     private static class Nodo {
         Registro registro;
         List<Nodo> hijos;
@@ -23,6 +25,9 @@ public class ArbolGeneral {
         this.raiz = null;
     }
 
+    // Agrega una alarma al árbol según su padre.
+    // Si el padre es 0, se convierte en la raíz.
+    // En cualquier otro caso, se busca el nodo con ese ID y se añade como hijo.
     public void agregarHijo(Registro registro) {
         if (registro == null) {
             throw new IllegalArgumentException("El registro no puede ser nulo.");
@@ -44,6 +49,7 @@ public class ArbolGeneral {
         padre.hijos.add(new Nodo(registro));
     }
 
+    // Recorre la estructura desde la raíz, luego izquierda/izquierda en el árbol general.
     public String imprimirPreorden() {
         if (raiz == null) {
             return "";
@@ -54,6 +60,7 @@ public class ArbolGeneral {
         return sb.length() > 0 ? sb.substring(0, sb.length() - 1) : "";
     }
 
+    // Recorre primero los hijos y luego la raíz.
     public String imprimirPostorden() {
         if (raiz == null) {
             return "";
@@ -64,6 +71,7 @@ public class ArbolGeneral {
         return sb.length() > 0 ? sb.substring(0, sb.length() - 1) : "";
     }
 
+    // Recorre por niveles: raíz, luego hijos del primer nivel, etc.
     public String imprimirPorNiveles() {
         if (raiz == null) {
             return "";
@@ -84,14 +92,18 @@ public class ArbolGeneral {
         return sb.length() > 0 ? sb.substring(0, sb.length() - 1) : "";
     }
 
+    // Altura de un árbol general: número de aristas desde la raíz hasta la hoja más profunda.
     public int calcularAltura() {
         return altura(raiz);
     }
 
+    // Cuenta cuántas hojas tiene el árbol.
     public int contarHojas() {
         return contarHojas(raiz);
     }
 
+    // Cancela todo el subárbol a partir de un nodo.
+    // Solo cambia a CANCELADO las alarmas que estén en PENDIENTE.
     public int cancelarSubarbol(int id) {
         Nodo nodo = buscarNodoPorId(raiz, id);
         if (nodo == null) {

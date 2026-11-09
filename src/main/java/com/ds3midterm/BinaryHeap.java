@@ -5,6 +5,8 @@ import java.util.Comparator;
 import java.util.List;
 
 public class BinaryHeap {
+    // Este heap mantiene en la raíz la alarma con mayor prioridad.
+    // Sirve como "sala de emergencias" donde el operador atiende primero lo más urgente.
     private final List<Registro> heap = new ArrayList<>();
 
     public void insertar(Registro registro) {

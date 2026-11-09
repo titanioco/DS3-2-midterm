@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.TreeMap;
 
 public class BST {
+    // BST de apoyo para mantener el historial por ID, aunque el proyecto usa AVL para búsquedas rápidas.
     private final TreeMap<Integer, Registro> registros = new TreeMap<>();
 
     public void insertar(Registro registro) {

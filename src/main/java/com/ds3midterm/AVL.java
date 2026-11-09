@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.TreeMap;
 
 public class AVL {
+    // AVL simple basado en TreeMap.
+    // Su objetivo es consultar por ID de forma muy rápida, usando el orden natural de enteros.
     private final TreeMap<Integer, Registro> registros = new TreeMap<>();
 
     public void insertar(Registro registro) {

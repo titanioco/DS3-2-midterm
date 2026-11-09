@@ -5,6 +5,8 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class Main {
+    // Se mantiene una única colección de datos por estructura, pero todas apuntan al mismo objeto Registro.
+    // Esto es clave para no duplicar información y mantener la consistencia del estado.
     private static final ArbolGeneral arbolGeneral = new ArbolGeneral();
     private static final BST bst = new BST();
     private static final AVL avl = new AVL();
@@ -25,21 +27,27 @@ public class Main {
             try {
                 switch (comando) {
                     case "REGISTRAR":
+                        // O1: crear la alarma y guardarla en todas las estructuras.
                         registrar(partes);
                         break;
                     case "CONSULTAR":
+                        // O2: buscar por ID de manera rápida usando AVL.
                         consultar(partes);
                         break;
                     case "SIGUIENTE":
+                        // O3: extraer la alarma más urgente del heap.
                         siguiente();
                         break;
                     case "CANCELAR":
+                        // O4: cancelar un subárbol y limpiar el heap.
                         cancelar(partes);
                         break;
                     case "REPORTE":
+                        // O5: mostrar las alarmas pendientes ordenadas por prioridad.
                         reporte();
                         break;
                     case "ESTADISTICAS":
+                        // O6: mostrar métricas del árbol y del sistema.
                         estadisticas();
                         break;
                     default:
@@ -63,19 +71,25 @@ public class Main {
         int prioridad = Integer.parseInt(partes[3]);
         int padre = Integer.parseInt(partes[4]);
 
+        // Validación de la prioridad según el dominio del problema.
         if (prioridad < 1 || prioridad > 10) {
             throw new IllegalArgumentException("La prioridad debe estar entre 1 y 10.");
         }
 
+        // No se permiten IDs duplicados. El AVL y el BST sirven como índices.
         if (avl.existe(id) || bst.existe(id)) {
             throw new IllegalArgumentException("El ID ya existe.");
         }
 
+        // Si el padre no es la raíz (0), debe existir en la jerarquía.
         if (padre != 0 && !avl.existe(padre) && !arbolGeneral.existeId(padre)) {
             throw new IllegalArgumentException("El padre indicado no existe.");
         }
 
+        // Se crea una sola instancia de Registro para mantener la consistencia del estado.
         Registro registro = new Registro(id, nombre, prioridad, padre);
+
+        // Se registra la misma referencia en todas las estructuras.
         arbolGeneral.agregarHijo(registro);
         bst.insertar(registro);
         avl.insertar(registro);
@@ -110,6 +124,7 @@ public class Main {
             return;
         }
 
+        // El heap extrae la alarma más urgente y la marca como atendida.
         Registro registro = heap.extraerMax();
         registro.setEstado(Registro.Estado.ATENDIDO);
         avl.actualizar(registro);
@@ -124,6 +139,9 @@ public class Main {
 
         int id = Integer.parseInt(partes[1]);
         int cancelados = arbolGeneral.cancelarSubarbol(id);
+
+        // Como el heap no permite eliminación eficiente por ID, se reconstruye
+        // con solo las alarmas que sigan en estado PENDIENTE.
         reconstruirHeap();
         System.out.println(cancelados);
     }
