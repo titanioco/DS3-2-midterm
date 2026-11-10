@@ -48,18 +48,24 @@ This guide is intended for both the implementation team and new contributors, an
 
 ## Compile and run
 
-From the project root, compile the source files into the output directory:
+From the project root, compile the source files into the output directory. Use
+the commands for your shell; the Bash command is not compatible with Windows
+PowerShell.
 
+For Bash (Linux, macOS, or Git Bash):
 ```bash
 javac -d out $(find src/main/java -name "*.java")
 java -cp out com.ds3midterm.Main
 ```
 
-On Windows PowerShell, use:
+For Windows PowerShell:
 
 ```powershell
-javac -d out (Get-ChildItem -Recurse -Filter *.java src/main/java | % { $_.FullName })
-java -cp out com.ds3midterm.Main
+New-Item -ItemType Directory -Force .\out | Out-Null
+$sources = Get-ChildItem -Path .\src\main\java -Recurse -Filter *.java | ForEach-Object { $_.FullName }
+javac -d .\out $sources
+if ($LASTEXITCODE -ne 0) { throw "Compilation failed; the application was not started." }
+java -cp .\out com.ds3midterm.Main
 ```
 
 ## Notes for the team
